@@ -3,7 +3,7 @@
  * DAPODIK CHECKPOINT - PROFIL PAGE (REVAMPED)
  * ============================================================
  * - Dropdown menu untuk ubah profil
- * - 3 section: Data Pengguna, Password, Kepala Sekolah
+ * - 3 section: Data Operator, Password, Kepala Sekolah
  * ============================================================
  */
 
@@ -434,7 +434,7 @@ async function handleUpdateUserData(event) {
         throw new Error(result.errors.join(' '));
       }
 
-      throw new Error(result.message || 'Gagal menyimpan data pengguna.');
+      throw new Error(result.message || 'Gagal menyimpan Data operator.');
     }
 
     if (result.data && result.data.user) {
@@ -446,7 +446,7 @@ async function handleUpdateUserData(event) {
 
     showAuthMessage(
       'profile-user-data-message',
-      result.message || 'Data pengguna berhasil diperbarui.',
+      result.message || 'Data operator berhasil diperbarui.',
       'success'
     );
 
@@ -458,7 +458,7 @@ async function handleUpdateUserData(event) {
     );
 
   } finally {
-    setButtonLoading(submitButton, false, 'Simpan Data Pengguna');
+    setButtonLoading(submitButton, false, 'Simpan Data Operator');
   }
 }
 
