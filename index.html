@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dapodik Checkpoint - Pantau Progres Update Dapodik</title>
+  <meta name="description" content="Aplikasi checklist progres pemutakhiran Dapodik untuk operator sekolah." />
+
+  <link rel="icon" type="image/png" href="assets/logo-dapodik.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Lewati ke konten</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#/">
+        <img
+          src="assets/logo-dapodik.png"
+          alt="Logo Dapodik"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <span class="brand-text">
+          <strong>Dapodik</strong> Checkpoint
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Navigasi utama">
+        <a href="#fitur">Fitur</a>
+        <a href="#tahapan">Tahapan</a>
+        <a href="#tentang">Tentang</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-outline" data-action="open-login-operator">
+          Masuk Operator
+        </button>
+
+        <button class="btn btn-outline" data-action="open-login-admin">
+          Masuk Admin
+        </button>
+
+        <button class="btn btn-primary" data-action="open-register">
+          Daftar Akun
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge">
+        Alat Bantu Pemantauan Progres Update Dapodik
+      </div>
+
+      <h1>
+        Selesaikan Update Dapodik Sesuai Urutan Prioritas
+      </h1>
+
+      <p>
+        Dapodik Checkpoint membantu operator sekolah memantau progres
+        pemutakhiran data Dapodik semester Ganjil dan Genap melalui
+        checklist 12 tahap: mulai dari persiapan, guru sertifikasi,
+        peserta didik, sarana prasarana, validasi, sinkronisasi,
+        hingga arsip.
+      </p>
+
+      <div class="hero-note">
+        Aplikasi ini adalah alat bantu pemantauan checklist, bukan aplikasi
+        Dapodik resmi dan tidak terhubung langsung ke server Dapodik
+        Kemendikdasmen.
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div id="bosp-countdown" class="bosp-card">
+        <div class="bosp-head">
+          <div class="bosp-icon">🕐</div>
+          <div class="bosp-title">
+            Batas Akhir Pengiriman Data untuk BOSP
+          </div>
+        </div>
+
+        <div class="bosp-timer" id="bosp-timer">
+          <div class="bosp-unit">
+            <div class="bosp-value" id="bosp-hari">0</div>
+            <div class="bosp-label">Hari</div>
+          </div>
+          <div class="bosp-unit">
+            <div class="bosp-value" id="bosp-jam">00</div>
+            <div class="bosp-label">Jam</div>
+          </div>
+          <div class="bosp-unit">
+            <div class="bosp-value" id="bosp-menit">00</div>
+            <div class="bosp-label">Menit</div>
+          </div>
+          <div class="bosp-unit">
+            <div class="bosp-value" id="bosp-detik">00</div>
+            <div class="bosp-label">Detik</div>
+          </div>
+        </div>
+
+        <div class="bosp-date">
+          Batas: 31 Agustus 2026 pukul 23.59 WIB
+        </div>
+
+        <div id="bosp-expired" class="bosp-expired" style="display: none;">
+          Batas akhir pengiriman data telah berakhir.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="fitur" class="section">
+            <div class="container">
+        <div class="section-heading">
+          <h2>Fitur Utama</h2>
+          <p>
+            Dibangun mengikuti alur kerja operator sekolah berdasarkan
+            checklist Excel Dapodik Checkpoint Ganjil dan Genap.
+          </p>
+        </div>
+
+        <div class="grid grid-4">
+          <article class="card">
+            <h3>Checklist 12 Tahap</h3>
+            <p>
+              Checklist terstruktur dari Persiapan, Rombel, Pembelajaran,
+              Peserta Didik, Sarpras, Validasi, Sinkronisasi, hingga Arsip.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Auto-save 5 Menit</h3>
+            <p>
+              Progres checklist disimpan otomatis ke Google Sheets selama
+              sesi operator aktif.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Dashboard & Riwayat</h3>
+            <p>
+              Operator dapat melihat progres per tahap dan melanjutkan
+              pekerjaan semester tanpa mengulang dari awal.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Ekspor Laporan</h3>
+            <p>
+              Laporan checklist dapat disiapkan untuk kebutuhan dokumentasi
+              sekolah dalam format PDF/Excel pada tahap lanjutan.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tahapan" class="section section-alt">
+      <div class="container">
+        <div class="section-heading">
+          <h2>12 Tahap Checklist</h2>
+          <p>
+            Urutan tahap mengikuti prioritas pekerjaan yang berdampak pada
+            validasi guru sertifikasi, peserta didik, sarpras, dan sinkronisasi.
+          </p>
+        </div>
+
+        <div class="stage-grid">
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">1</span>
+              <span class="badge badge-red">Tinggi</span>
+            </div>
+            <strong>Persiapan Update Dapodik</strong>
+            <p>Dokumen administrasi, backup, installer/patch, dan login.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">2</span>
+              <span class="badge badge-red">Tinggi</span>
+            </div>
+            <strong>Rombel - Guru Sertifikasi</strong>
+            <p>Rombel lanjut, wali kelas, kurikulum, dan mapel pilihan.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">3</span>
+              <span class="badge badge-red">Tinggi</span>
+            </div>
+            <strong>Pembelajaran - Guru Sertifikasi</strong>
+            <p>Mapel, guru pengampu, SK mengajar, dan JP.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">4</span>
+              <span class="badge badge-red">Tinggi</span>
+            </div>
+            <strong>Validasi Penugasan - Guru Sertifikasi</strong>
+            <p>Keaktifan, tugas tambahan, SK, dan profil guru.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">5</span>
+              <span class="badge badge-orange">Sedang-Tinggi</span>
+            </div>
+            <strong>Pembelajaran - Guru Non Sertifikasi</strong>
+            <p>Mapel, guru pengampu, SK mengajar, dan JP.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">6</span>
+              <span class="badge badge-orange">Sedang-Tinggi</span>
+            </div>
+            <strong>Validasi Penugasan - Guru Non Sertifikasi</strong>
+            <p>Keaktifan, tugas tambahan, SK, dan profil guru.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">7</span>
+              <span class="badge badge-orange">Sedang-Tinggi</span>
+            </div>
+            <strong>Peserta Didik</strong>
+            <p>Biodata, orang tua, registrasi, dan validasi.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">8</span>
+              <span class="badge badge-yellow">Sedang</span>
+            </div>
+            <strong>Sarana Prasarana</strong>
+            <p>Bangunan, ruang, laboratorium, perpustakaan, dan lahan.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">9</span>
+              <span class="badge badge-yellow">Sedang</span>
+            </div>
+            <strong>Validasi Data Lokal</strong>
+            <p>Jalankan validasi lokal dan perbaiki invalid/warning.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">10</span>
+              <span class="badge badge-yellow">Sedang</span>
+            </div>
+            <strong>Sinkronisasi</strong>
+            <p>Generate prefill, sinkronisasi, dan cek log.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">11</span>
+              <span class="badge badge-yellow">Sedang</span>
+            </div>
+            <strong>Pasca Sinkronisasi</strong>
+            <p>Cek tarik data pusat, verval PTK, dan verval PD.</p>
+          </article>
+
+          <article class="stage-item">
+            <div class="stage-top">
+              <span class="stage-number">12</span>
+              <span class="badge badge-green">Rendah</span>
+            </div>
+            <strong>Arsip</strong>
+            <p>Backup, export data, dan log perubahan semester.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="tentang" class="section">
+      <div class="container">
+        <div class="cta-box">
+          <div>
+            <h2>Siap memulai checklist semester ini?</h2>
+            <p>
+              Daftar sebagai operator sekolah, lalu mulai pantau progres
+              update Dapodik secara lebih rapi dan terstruktur.
+            </p>
+          </div>
+
+          <div class="cta-actions">
+            <button class="btn btn-light" data-action="open-register">
+              Daftar Akun
+            </button>
+
+            <button class="btn btn-outline-light" data-action="open-login-operator">
+              Masuk Operator
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>Dapodik Checkpoint</strong>
+        <span id="footer-year"></span>&nbsp;OPS Dapodik Kalimantan Selatan.<br>
+        Akurat, Mutakhir dan Berkelanjutan.
+      </div>
+
+      <div class="footer-note">
+        Alat bantu pemantauan progres update Dapodik.<br>
+		Bukan aplikasi resmi Dapodik Kemendikdasmen.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/notifikasi.js"></script>
+  <script src="js/countdown-bosp.js"></script>
+</body>
+</html>

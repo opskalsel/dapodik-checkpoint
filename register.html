@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daftar Akun - Dapodik Checkpoint</title>
+  <meta name="description" content="Daftar akun operator sekolah untuk aplikasi Dapodik Checkpoint." />
+
+  <link rel="icon" type="image/png" href="assets/logo-dapodik.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img
+          src="assets/logo-dapodik.png"
+          alt="Logo Dapodik"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <span class="brand-text">
+          <strong>Dapodik</strong> Checkpoint
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="container">
+      <div class="auth-card wide">
+        <div class="auth-brand">
+          <img
+            src="assets/logo-dapodik.png"
+            alt="Logo Dapodik"
+            onerror="this.style.display='none'"
+          />
+        </div>
+
+        <div class="auth-head">
+          <span class="badge badge-blue">Operator Sekolah</span>
+          <h1 class="auth-title">Daftar Akun Baru</h1>
+          <p class="auth-sub">
+            Lengkapi data operator dan sekolah untuk mulai menggunakan Dapodik Checkpoint.
+          </p>
+        </div>
+
+        <div id="register-message" class="alert" role="alert"></div>
+
+        <form id="register-form" novalidate>
+          <div class="form-grid-2">
+            <div class="field">
+              <label for="register-nama-operator">Nama Operator</label>
+              <input
+                type="text"
+                id="register-nama-operator"
+                placeholder="Contoh: Budi Santoso"
+              />
+            </div>
+
+            <div class="field">
+              <label for="register-nama-sekolah">Nama Sekolah</label>
+              <input
+                type="text"
+                id="register-nama-sekolah"
+                placeholder="Contoh: SMA Negeri 1 Contoh"
+              />
+            </div>
+
+            <div class="field">
+  <label for="register-npsn">NPSN</label>
+  <input
+    type="text"
+    id="register-npsn"
+    inputmode="numeric"
+    maxlength="8"
+    placeholder="8 digit NPSN"
+  />
+</div>
+
+            <div class="field">
+  <label for="register-no-hp">No. HP / WA</label>
+  <input
+    type="text"
+    id="register-no-hp"
+    inputmode="tel"
+    placeholder="Contoh: 081234567890"
+  />
+</div>
+
+            <div class="field">
+              <label for="register-email">Email</label>
+              <input
+                type="email"
+                id="register-email"
+                autocomplete="email"
+                placeholder="Contoh: operator@sekolah.sch.id"
+              />
+            </div>
+
+            <div class="field">
+  <label for="register-username">Username</label>
+  <input
+    type="text"
+    id="register-username"
+    autocomplete="username"
+    placeholder="Contoh: operator-sman1"
+  />
+</div>
+
+            <div class="field">
+              <label for="register-password">Password</label>
+              <input
+                type="password"
+                id="register-password"
+                autocomplete="new-password"
+                placeholder="Minimal 8 karakter"
+              />
+            </div>
+
+            <div class="field">
+              <label for="register-confirm-password">Konfirmasi Password</label>
+              <input
+                type="password"
+                id="register-confirm-password"
+                autocomplete="new-password"
+                placeholder="Ulangi password"
+              />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="register-submit" class="btn btn-primary btn-block">
+              Daftar Akun
+            </button>
+          </div>
+        </form>
+
+        <div class="auth-footer">
+          Sudah punya akun?
+          <a class="muted-link" href="login.html?role=operator">Masuk Operator</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/notifikasi.js"></script>
+</body>
+</html>

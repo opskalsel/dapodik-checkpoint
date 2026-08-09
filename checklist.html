@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checklist - Dapodik Checkpoint</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-dapodik.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="dashboard.html">
+        <img
+          src="assets/logo-dapodik.png"
+          alt="Logo Dapodik"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <span class="brand-text">
+          <strong>Dapodik</strong> Checkpoint
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="dashboard.html">Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" id="checklist-page">
+      <div id="checklist-message" class="alert" role="alert"></div>
+
+      <section class="card checklist-toolbar">
+        <div class="toolbar-grid">
+          <div class="field">
+            <label for="checklist-semester">Semester</label>
+            <select id="checklist-semester" class="select-input">
+              <option value="Ganjil">Ganjil</option>
+              <option value="Genap">Genap</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="checklist-tahun">Tahun Pelajaran</label>
+            <select id="checklist-tahun" class="select-input">
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Metode Update</label>
+            <div class="radio-group">
+              <label class="radio-pill">
+                <input
+                  type="radio"
+                  name="metode-update"
+                  value="Installer"
+                  checked
+                />
+                Installer
+              </label>
+
+              <label class="radio-pill">
+                <input
+                  type="radio"
+                  name="metode-update"
+                  value="Patch"
+                />
+                Patch
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button id="reload-checklist-button" class="btn btn-outline" type="button">
+            Muat Ulang
+          </button>
+
+          <button id="save-checklist-button" class="btn btn-primary" type="button">
+            Simpan Sekarang
+          </button>
+        </div>
+
+        <div id="save-status" class="muted">
+          Tidak ada perubahan yang belum disimpan
+        </div>
+
+        <div class="progress-summary checklist-progress-summary">
+          <div class="progress-total-percent" id="checklist-total-percent">0%</div>
+
+          <div class="progress-track">
+            <div
+              id="checklist-total-bar"
+              class="progress-fill"
+              style="width: 0%"
+            ></div>
+          </div>
+
+          <div id="checklist-total-checked" class="muted">
+            0 dari 0 item tercentang
+          </div>
+        </div>
+      </section>
+
+      <div class="checklist-layout">
+        <aside class="checklist-sidebar" id="stage-nav"></aside>
+        <section class="checklist-content" id="checklist-content"></section>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/checklist.js"></script>
+  <script src="js/tahun-pelajaran.js"></script>
+  <script src="js/notifikasi.js"></script>
+</body>
+</html>

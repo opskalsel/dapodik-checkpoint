@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Operator - Dapodik Checkpoint</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-dapodik.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img
+          src="assets/logo-dapodik.png"
+          alt="Logo Dapodik"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <span class="brand-text">
+          <strong>Dapodik</strong> Checkpoint
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="profil.html">Profil</a>
+        <a class="btn btn-outline" href="riwayat.html">Riwayat</a>
+        <a class="btn btn-outline" href="export.html">Ekspor</a>
+
+        <button id="logout-button" class="btn btn-outline">
+          Keluar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" id="dashboard-page">
+      <div id="dashboard-message" class="alert" role="alert"></div>
+
+      <div class="dashboard-grid">
+        <section class="card dashboard-card">
+          <h2 class="dashboard-title">Profil</h2>
+
+          <div class="profile-list">
+            <div class="profile-item">
+              <span>Role</span>
+              <strong id="profile-role-badge" class="badge badge-blue">-</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>Nama Sekolah</span>
+              <strong id="profile-sekolah">-</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>NPSN</span>
+              <strong id="profile-npsn">-</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>Nama Operator</span>
+              <strong id="profile-nama">-</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>Username</span>
+              <strong id="profile-username">-</strong>
+            </div>
+
+            <div class="profile-item">
+              <span>Email</span>
+              <strong id="profile-email">-</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="card dashboard-card">
+          <h2 class="dashboard-title">Periode Checklist</h2>
+
+          <div class="period-controls">
+            <div class="field">
+              <label for="period-semester">Semester</label>
+              <select id="period-semester" class="select-input">
+                <option value="Ganjil">Ganjil</option>
+                <option value="Genap">Genap</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="period-tahun">Tahun Pelajaran</label>
+              <select id="period-tahun" class="select-input"></select>
+              <p class="field-hint">
+                Format yang valid: 2026/2027
+              </p>
+            </div>
+
+            <div class="btn-group">
+              <button id="load-progress-button" class="btn btn-outline btn-block" type="button">
+                Muat Progres
+              </button>
+
+              <button id="continue-checklist-button" class="btn btn-primary btn-block" type="button">
+                Lanjutkan Checklist
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="card dashboard-card">
+          <h2 class="dashboard-title">Progres Keseluruhan</h2>
+
+          <div class="progress-summary">
+            <div class="progress-total-percent" id="total-percent">0%</div>
+
+            <div class="progress-track">
+              <div
+                id="total-bar"
+                class="progress-fill"
+                style="width: 0%"
+              ></div>
+            </div>
+
+            <div id="total-checked" class="muted">
+              0 dari 0 item tercentang
+            </div>
+
+            <div id="total-weight-info" class="muted">
+              Bobot tercentang: 0 dari 0
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2 class="dashboard-title">Progres per Tahap</h2>
+        <div id="stage-list" class="stage-list"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/tahun-pelajaran.js"></script>
+  <script src="js/notifikasi.js"></script>
+</body>
+</html>

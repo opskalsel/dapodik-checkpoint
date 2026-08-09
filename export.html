@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ekspor Laporan - Dapodik Checkpoint</title>
+
+  <link rel="icon" type="image/png" href="assets/logo-dapodik.png" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="dashboard.html">
+        <img
+          src="assets/logo-dapodik.png"
+          alt="Logo Dapodik"
+          class="brand-logo"
+          onerror="this.style.display='none'"
+        />
+        <span class="brand-text">
+          <strong>Dapodik</strong> Checkpoint
+        </span>
+      </a>
+
+      <div class="header-actions">
+        <a class="btn btn-outline" href="dashboard.html">Dashboard</a>
+        <a class="btn btn-outline" href="checklist.html">Checklist</a>
+        <a class="btn btn-outline" href="riwayat.html">Riwayat</a>
+        <a class="btn btn-outline" href="profil.html">Profil</a>
+        <button id="logout-button" class="btn btn-outline" type="button">
+          Keluar
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container" id="export-page">
+      <div id="export-message" class="alert" role="alert"></div>
+
+      <section class="card">
+        <div class="section-heading">
+          <h2>Ekspor Laporan Checklist</h2>
+          <p>
+            Unduh laporan progres checklist dalam format Excel atau PDF
+            berdasarkan semester dan tahun pelajaran.
+          </p>
+        </div>
+
+        <div class="toolbar-grid">
+          <div class="field">
+            <label for="export-semester">Semester</label>
+            <select id="export-semester" class="select-input">
+              <option value="Ganjil">Ganjil</option>
+              <option value="Genap">Genap</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="export-tahun">Tahun Pelajaran</label>
+            <select id="export-tahun" class="select-input"></select>
+            </div>
+
+          <div class="field">
+            <label for="export-metode">Metode Update</label>
+            <select id="export-metode" class="select-input">
+              <option value="Semua">Semua Item</option>
+              <option value="Installer">Hanya Installer</option>
+              <option value="Patch">Hanya Patch</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button id="load-export-button" class="btn btn-outline" type="button">
+            Muat Data
+          </button>
+
+          <button id="export-excel-button" class="btn btn-primary" type="button">
+            Export Excel
+          </button>
+
+          <button id="export-pdf-button" class="btn btn-primary" type="button">
+            Export PDF
+          </button>
+        </div>
+      </section>
+
+      <section class="card" id="export-preview-card" style="margin-top: 16px;">
+        <h2 class="dashboard-title">Pratinjau Ringkasan</h2>
+        <div id="export-preview" class="export-preview"></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/tahun-pelajaran.js"></script>
+
+  <!-- Library ekspor -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <script src="js/export.js"></script>
+  <script src="js/notifikasi.js"></script>
+</body>
+</html>
