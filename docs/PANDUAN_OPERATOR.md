@@ -30,8 +30,8 @@
 
 ## 6. Profil
 1. Klik **Ubah Profil ▼**.
-2. **Ubah Data Pengguna**: nama, sekolah, NPSN, email, No HP, status kepegawaian + NIP/NIY operator.
-3. **Ubah Data Kepala Sekolah**: nama, status, NIP/NIY kepala sekolah.
+2. **Ubah Data OPS**: nama, sekolah, NPSN, email, No HP, status kepegawaian + NIP/NIY operator.
+3. **Ubah Data KEPSEK**: nama, status, NIP/NIY kepala sekolah.
 4. **Ubah Password** bila perlu.
 
 ## 7. Masalah Umum
