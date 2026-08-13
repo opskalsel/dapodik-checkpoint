@@ -241,14 +241,17 @@ async function loadExportData() {
 
     const masterResult = await masterPromise;
 
-    if (!masterResult.success) {
-      if (masterResult.code === 401 || masterResult.code === 403) {
+    if (!masterResult || !masterResult.success || !masterResult.data) {
+      if (masterResult && (masterResult.code === 401 || masterResult.code === 403)) {
         clearSession();
         window.location.href = 'login.html?role=operator';
         return;
       }
 
-      throw new Error(masterResult.message || 'Gagal memuat master checklist.');
+      throw new Error(
+        (masterResult && masterResult.message) ||
+        'Gagal memuat master checklist.'
+      );
     }
 
     exportState.master = masterResult.data.items || [];
