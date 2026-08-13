@@ -214,25 +214,18 @@ async function loadChecklistData() {
 
   setButtonLoading(reloadButton, true, 'Memuat...');
 
-  /**
-   * Muat draft lokal untuk periode ini.
-   * Draft lokal dipakai agar perubahan yang belum disimpan tetap ada.
-   */
   const draft = loadDraft();
 
   checklistState.draftItems = draft.items || {};
   checklistState.dirty = draft.dirty || {};
+  checklistState.metode = draft.metodeUpdate || checklistState.metode || 'Installer';
 
-  if (draft.metodeUpdate) {
-    checklistState.metode = draft.metodeUpdate;
-  } else {
-    checklistState.metode = checklistState.metode || 'Installer';
+  if (typeof setMetodeRadio === 'function') {
+    setMetodeRadio(checklistState.metode);
   }
 
-  setMetodeRadio(checklistState.metode);
-
   try {
-        const masterPromise = apiRequest(
+    const masterResult = await apiRequest(
       'getMaster',
       {
         semester: period.semester,
@@ -241,57 +234,49 @@ async function loadChecklistData() {
       true
     );
 
-    const progressPromise = apiRequest(
-      'getProgress',
-      {
-        semester: period.semester,
-        tahunPelajaran: period.tahun
-      },
-      true
-    );
-
-    const masterResult = await masterPromise;
-
-    if (!masterResult.success) {
-      if (masterResult.code === 401 || masterResult.code === 403) {
+    /**
+     * Guard: jangan baca .data jika respons gagal
+     */
+    if (!masterResult || !masterResult.success || !masterResult.data) {
+      if (masterResult && (masterResult.code === 401 || masterResult.code === 403)) {
         clearSession();
         window.location.href = 'login.html?role=operator';
         return;
       }
 
-      throw new Error(masterResult.message || 'Gagal memuat master checklist.');
+      throw new Error(
+        (masterResult && masterResult.message) ||
+        'Gagal memuat master checklist.'
+      );
     }
 
     checklistState.master = masterResult.data.items || [];
     checklistState.stages = masterResult.data.stages || [];
 
-    const progressResult = await progressPromise;
+    const progressResult = await apiRequest(
+      'getProgress',
+      {
+        semester: period.semester,
+        tahunPelajaran: period.tahun,
+        metodeUpdate: checklistState.metode
+      },
+      true
+    );
 
-    if (!progressResult.success) {
-      if (progressResult.code === 401 || progressResult.code === 403) {
-        clearSession();
-        window.location.href = 'login.html?role=operator';
-        return;
-      }
-
-      /**
-       * Jika progres gagal dimuat, tetap tampilkan checklist
-       * dengan progres kosong.
-       */
+    if (progressResult && progressResult.success && progressResult.data) {
+      checklistState.progress = progressResult.data.progress || {};
+    } else {
       checklistState.progress = {};
 
       showAuthMessage(
         'checklist-message',
-        'Checklist berhasil dimuat, tetapi progres tersimpan gagal diambil. ' +
-        (progressResult.message || ''),
+        'Master checklist dimuat, tetapi progres gagal diambil. Menampilkan status kosong.',
         'info'
       );
-
-    } else {
-      checklistState.progress = progressResult.data.progress || {};
     }
 
-    checklistState.activeTahap = 1;
+    checklistState.semester = period.semester;
+    checklistState.tahun = period.tahun;
     checklistState.loaded = true;
 
     renderAll();
@@ -302,6 +287,7 @@ async function loadChecklistData() {
       error.message || String(error),
       'error'
     );
+
   } finally {
     setButtonLoading(reloadButton, false, 'Muat Ulang');
   }
