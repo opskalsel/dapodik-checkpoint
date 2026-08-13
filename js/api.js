@@ -12,7 +12,7 @@
 const API_CONFIG = {
   maxRetries: 2,
   retryDelayMs: 1200,
-  timeoutMs: 30000
+  timeoutMs: 60000
 };
 
 function apiDelay_(ms) {
