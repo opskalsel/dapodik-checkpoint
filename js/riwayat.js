@@ -1266,3 +1266,298 @@ function getNIPLabelRiwayat(status) {
   return 'NIP/NIY';
 }
 
+/**
+ * ============================================================
+ * PATCH 5B - EKSPOR PERBANDINGAN PERIODE
+ * ============================================================
+ */
+
+/**
+ * Simpan data perbandingan terakhir + munculkan tombol ekspor
+ */
+const previousRenderComparisonResult = renderComparisonResult;
+
+renderComparisonResult = function (data) {
+  riwayatState.lastComparison = data;
+
+  const actions = document.getElementById('compare-export-actions');
+
+  if (actions) {
+    actions.style.display = 'flex';
+  }
+
+  previousRenderComparisonResult(data);
+};
+
+document.addEventListener('DOMContentLoaded', function () {
+  const excelBtn = document.getElementById('compare-export-excel');
+  const pdfBtn = document.getElementById('compare-export-pdf');
+
+  if (excelBtn) {
+    excelBtn.addEventListener('click', handleExportCompareExcel);
+  }
+
+  if (pdfBtn) {
+    pdfBtn.addEventListener('click', handleExportComparePDF);
+  }
+});
+
+/**
+ * ---------- HELPERS ----------
+ */
+
+function formatDeltaCompare(diff) {
+  const num = Number(diff || 0);
+  const rounded = Math.round(num * 100) / 100;
+
+  return (rounded > 0 ? '+' : '') + rounded.toLocaleString('id-ID') + '%';
+}
+
+function statusCompare(diff) {
+  const num = Number(diff || 0);
+
+  if (num > 0) return 'Naik';
+  if (num < 0) return 'Turun';
+  return 'Tetap';
+}
+
+function formatCompareDateFile() {
+  const now = new Date();
+  const dd = String(now.getDate()).padStart(2, '0');
+  const mm = String(now.getMonth() + 1).padStart(2, '0');
+
+  return dd + '-' + mm + '-' + now.getFullYear();
+}
+
+function buildCompareFilename(data, extension) {
+  return 'Perbandingan_' +
+    data.a.semester + '_' +
+    String(data.a.tahunPelajaran).replace('/', '-') +
+    '_vs_' +
+    data.b.semester + '_' +
+    String(data.b.tahunPelajaran).replace('/', '-') +
+    '_' + formatCompareDateFile() + '.' + extension;
+}
+
+/**
+ * ---------- EXPORT EXCEL ----------
+ */
+
+function handleExportCompareExcel() {
+  const data = riwayatState.lastComparison;
+
+  if (!data) {
+    notifGagal('Lakukan perbandingan terlebih dahulu.');
+    return;
+  }
+
+  if (typeof XLSX === 'undefined') {
+    notifGagal('Library Excel belum termuat. Periksa koneksi internet.');
+    return;
+  }
+
+  const user = getSessionUser() || {};
+  const labelA = data.a.semester + ' ' + data.a.tahunPelajaran;
+  const labelB = data.b.semester + ' ' + data.b.tahunPelajaran;
+
+  const rows = [
+    ['DAPODIK CHECKPOINT - LAPORAN PERBANDINGAN PERIODE'],
+    [],
+    ['Nama Operator', user.namaOperator || '-'],
+    ['Nama Sekolah', user.namaSekolah || '-'],
+    ['NPSN', user.npsn || '-'],
+    ['Periode A', labelA],
+    ['Periode B', labelB],
+    ['Tanggal Ekspor', formatDateID(new Date().toISOString())],
+    [],
+    ['RINGKASAN'],
+    ['Total Periode A', formatPercentRiwayat(data.totalA)],
+    ['Total Periode B', formatPercentRiwayat(data.totalB)],
+    ['Selisih Total', formatDeltaCompare(data.totalDiff)],
+    ['Status', statusCompare(data.totalDiff)],
+    [],
+    ['PERBANDINGAN PER TAHAP'],
+    ['No', 'Tahap', labelA, labelB, 'Selisih', 'Status', 'Item Periode A', 'Item Periode B']
+  ];
+
+  data.rows.forEach(function (row, index) {
+    rows.push([
+      index + 1,
+      row.namaTahap,
+      formatPercentRiwayat(row.persenA),
+      formatPercentRiwayat(row.persenB),
+      formatDeltaCompare(row.diff),
+      row.status,
+      row.itemsA,
+      row.itemsB
+    ]);
+  });
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+
+  XLSX.utils.book_append_sheet(wb, ws, 'Perbandingan');
+
+  const filename = buildCompareFilename(data, 'xlsx');
+
+  XLSX.writeFile(wb, filename);
+
+  notifSukses('File Excel perbandingan berhasil dibuat: ' + filename);
+}
+
+/**
+ * ---------- EXPORT PDF ----------
+ */
+
+function handleExportComparePDF() {
+  const data = riwayatState.lastComparison;
+
+  if (!data) {
+    notifGagal('Lakukan perbandingan terlebih dahulu.');
+    return;
+  }
+
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    notifGagal('Library PDF belum termuat. Periksa koneksi internet.');
+    return;
+  }
+
+  const doc = new window.jspdf.jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  if (typeof doc.autoTable !== 'function') {
+    notifGagal('Plugin jspdf-autotable belum termuat.');
+    return;
+  }
+
+  const user = getSessionUser() || {};
+  const labelA = data.a.semester + ' ' + data.a.tahunPelajaran;
+  const labelB = data.b.semester + ' ' + data.b.tahunPelajaran;
+
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 14;
+
+  let y = margin;
+
+  /**
+   * Header
+   */
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(13);
+  doc.text(
+    'LAPORAN PERBANDINGAN CHECKPOINT DAPODIK',
+    pageWidth / 2,
+    y + 6,
+    { align: 'center' }
+  );
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text(
+    labelA + '  vs  ' + labelB,
+    pageWidth / 2,
+    y + 12,
+    { align: 'center' }
+  );
+
+  y += 18;
+
+  /**
+   * Identitas
+   */
+  doc.autoTable({
+    startY: y,
+    theme: 'plain',
+    styles: { fontSize: 9, cellPadding: 1.8 },
+    columnStyles: { 0: { fontStyle: 'bold', cellWidth: 45 } },
+    body: [
+      ['Nama Operator', user.namaOperator || '-'],
+      ['Nama Sekolah', user.namaSekolah || '-'],
+      ['NPSN', user.npsn || '-'],
+      ['Tanggal Ekspor', formatDateID(new Date().toISOString())]
+    ]
+  });
+
+  y = doc.lastAutoTable.finalY + 5;
+
+  /**
+   * Ringkasan total
+   */
+  doc.autoTable({
+    startY: y,
+    theme: 'grid',
+    styles: { fontSize: 8, cellPadding: 2 },
+    headStyles: { fillColor: [11, 60, 93] },
+    head: [['Total ' + labelA, 'Total ' + labelB, 'Selisih Total', 'Status']],
+    body: [[
+      formatPercentRiwayat(data.totalA),
+      formatPercentRiwayat(data.totalB),
+      formatDeltaCompare(data.totalDiff),
+      statusCompare(data.totalDiff)
+    ]]
+  });
+
+  y = doc.lastAutoTable.finalY + 6;
+
+  /**
+   * Tabel per tahap
+   */
+  doc.autoTable({
+    startY: y,
+    theme: 'grid',
+    styles: { fontSize: 7.5, cellPadding: 1.8 },
+    headStyles: { fillColor: [31, 111, 178] },
+    columnStyles: {
+      0: { cellWidth: 8 },
+      4: { cellWidth: 18 },
+      5: { cellWidth: 16 }
+    },
+    head: [['No', 'Tahap', labelA, labelB, 'Selisih', 'Status']],
+    body: data.rows.map(function (row, index) {
+      return [
+        index + 1,
+        row.namaTahap,
+        formatPercentRiwayat(row.persenA),
+        formatPercentRiwayat(row.persenB),
+        formatDeltaCompare(row.diff),
+        row.status
+      ];
+    })
+  });
+
+  /**
+   * Footer semua halaman
+   */
+  const totalPages = doc.internal.getNumberOfPages();
+
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(120);
+
+    doc.text(
+      'Dapodik Checkpoint - alat bantu pemantauan progres, bukan aplikasi resmi Dapodik Kemendikdasmen.',
+      margin,
+      pageHeight - 8
+    );
+
+    doc.text(
+      'Halaman ' + i + ' dari ' + totalPages,
+      pageWidth - margin,
+      pageHeight - 8,
+      { align: 'right' }
+    );
+  }
+
+  const filename = buildCompareFilename(data, 'pdf');
+
+  doc.save(filename);
+
+  notifSukses('File PDF perbandingan berhasil dibuat: ' + filename);
+}
+
