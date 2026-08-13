@@ -123,7 +123,7 @@ function tpFillSelect(select, selectedValue) {
     return;
   }
 
-  const options = tpBuildOptions(0, 3);
+  const options = tpBuildOptions(2, 3);
 
   select.innerHTML = '';
 
