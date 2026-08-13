@@ -1985,3 +1985,22 @@ a {
 .checklist-item-help {
   white-space: pre-line;
 }
+
+/**
+ * ============================================================
+ * TOMBOL EKSPOR PERBANDINGAN
+ * ============================================================
+ */
+
+.compare-export-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+@media (max-width: 640px) {
+  .compare-export-actions .btn {
+    flex: 1 1 auto;
+  }
+}
