@@ -2416,6 +2416,19 @@ async function saveNow() {
     return;
   }
 
+  /**
+   * GUARD BARU: jika master gagal dimuat, jangan klaim
+   * "tidak ada perubahan" — beri tahu user untuk memuat ulang.
+   */
+  if (!checklistState.master || !checklistState.master.length) {
+    showAuthMessage(
+      'checklist-message',
+      'Master checklist belum termuat. Klik "Muat Ulang" lalu coba lagi.',
+      'error'
+    );
+    return;
+  }
+
   if (!checklistState.metode) {
     showAuthMessage(
       'checklist-message',
@@ -2465,9 +2478,6 @@ async function saveNow() {
       throw new Error(result.message || 'Gagal menyimpan progres.');
     }
 
-    /**
-     * Perbarui baseline progres lokal
-     */
     items.forEach(function (item) {
       checklistState.progress[item.itemID] = {
         checked: item.checked,
@@ -2475,10 +2485,7 @@ async function saveNow() {
       };
     });
 
-    /**
-     * Bersihkan draft yang sudah tidak berbeda dari server
-     */
-    Object.keys(checklistState.draftItems).forEach(function (id) {
+    Object.keys(checklistState.draftItems || {}).forEach(function (id) {
       if (!isItemDirty(id)) {
         delete checklistState.draftItems[id];
       }
