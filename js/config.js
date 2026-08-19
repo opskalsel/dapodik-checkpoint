@@ -10,7 +10,7 @@ const APP_CONFIG = {
    * Contoh:
    * https://script.google.com/macros/s/xxxx/exec
    */
-  API_URL: 'https://script.google.com/macros/s/AKfycbxgmdoQ9Q6ADQuXvwksvP6rvUIgqsf_G0QzIPN4FrNxoK16H7QBMTlzsS6Yh08LFf0Z/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbyuK3Eeza_Q0acDG1bOz2aORHbtv-VwqSpvF6OzVvjQC-Kp1t6FGuNU0Q46dBIn3M_9/exec',
 
   APP_NAME: 'Dapodik Checkpoint',
   DEFAULT_SEMESTER: 'Ganjil',
