@@ -2362,3 +2362,146 @@ function formatBulletText(text) {
     })
     .join('\n');
 }
+
+/**
+ * ============================================================
+ * PATCH FIX-SAVE - PASTIKAN items SELALU ARRAY
+ * ============================================================
+ */
+
+function getDirtyItemIDs() {
+  const masterIDs = new Set();
+
+  checklistState.master.forEach(function (item) {
+    masterIDs.add(item.itemID);
+  });
+
+  const candidateIDs = new Set();
+
+  checklistState.master.forEach(function (item) {
+    candidateIDs.add(item.itemID);
+  });
+
+  Object.keys(checklistState.draftItems || {}).forEach(function (id) {
+    if (masterIDs.has(id)) {
+      candidateIDs.add(id);
+    }
+  });
+
+  return Array.from(candidateIDs).filter(function (id) {
+    return isItemDirty(id);
+  });
+}
+
+function buildItemsFromIDs(dirtyIds) {
+  const ids = Array.isArray(dirtyIds) ? dirtyIds : [];
+
+  return ids.map(function (itemID) {
+    const state = getItemState(itemID);
+
+    return {
+      itemID: itemID,
+      checked: Boolean(state.checked),
+      catatan: ''
+    };
+  });
+}
+
+async function saveNow() {
+  hideAuthMessage('checklist-message');
+
+  const period = syncPeriodFromInputs();
+
+  if (!period) {
+    return;
+  }
+
+  if (!checklistState.metode) {
+    showAuthMessage(
+      'checklist-message',
+      'Pilih metode update terlebih dahulu: Installer atau Patch.',
+      'error'
+    );
+    return;
+  }
+
+  const dirtyIds = getDirtyItemIDs();
+
+  if (!dirtyIds.length) {
+    showAuthMessage(
+      'checklist-message',
+      'Tidak ada perubahan yang perlu disimpan.',
+      'info'
+    );
+    return;
+  }
+
+  const items = buildItemsFromIDs(dirtyIds);
+
+  const saveButton = document.getElementById('save-checklist-button');
+
+  setButtonLoading(saveButton, true, 'Menyimpan...');
+
+  try {
+    const result = await apiRequest(
+      'saveProgress',
+      {
+        semester: period.semester,
+        tahunPelajaran: period.tahun,
+        metodeUpdate: checklistState.metode,
+        aksi: 'manual',
+        items: items
+      },
+      true
+    );
+
+    if (!result.success) {
+      if (result.code === 401 || result.code === 403) {
+        clearSession();
+        window.location.href = 'login.html?role=operator';
+        return;
+      }
+
+      throw new Error(result.message || 'Gagal menyimpan progres.');
+    }
+
+    /**
+     * Perbarui baseline progres lokal
+     */
+    items.forEach(function (item) {
+      checklistState.progress[item.itemID] = {
+        checked: item.checked,
+        catatan: ''
+      };
+    });
+
+    /**
+     * Bersihkan draft yang sudah tidak berbeda dari server
+     */
+    Object.keys(checklistState.draftItems).forEach(function (id) {
+      if (!isItemDirty(id)) {
+        delete checklistState.draftItems[id];
+      }
+    });
+
+    writeDraft();
+    updateSaveStatus();
+    updateProgressUI();
+
+    showAuthMessage(
+      'checklist-message',
+      'Progres berhasil disimpan. Total item terkirim: ' + items.length,
+      'success'
+    );
+
+  } catch (error) {
+    showAuthMessage(
+      'checklist-message',
+      error.message || String(error),
+      'error'
+    );
+
+  } finally {
+    setButtonLoading(saveButton, false, 'Simpan Sekarang');
+  }
+}
